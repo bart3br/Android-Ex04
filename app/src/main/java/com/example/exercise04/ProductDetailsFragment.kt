@@ -51,20 +51,4 @@ class ProductDetailsFragment : Fragment() {
             2 -> binding.productImageViewDB.setImageResource(R.drawable.cleaning_icon)
         }
     }
-
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        product = arguments?.getSerializable("product_key") as DBProduct
-
-        //display product info
-        binding.productNameTextViewDB.text = product.name
-        binding.descriptionTextViewDB.text = product.description
-        binding.priceTextViewDB.text = product.price.toString()
-        binding.ratingBar2DB.rating = product.rating
-        when (product.productType) {
-            0 -> binding.productImageViewDB.setImageResource(R.drawable.food_icon)
-            1 -> binding.productImageViewDB.setImageResource(R.drawable.water_icon)
-            2 -> binding.productImageViewDB.setImageResource(R.drawable.cleaning_icon)
-        }
-    }*/
 }
