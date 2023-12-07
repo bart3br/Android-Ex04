@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
@@ -34,29 +35,77 @@ class ProductAddDBFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         productRepo = ProductRepository.getInstance(requireContext())!!
 
-        binding.saveButtonDB.setOnClickListener { _ ->
-            var productType = 0
-            when (binding.radioGroupDB.checkedRadioButtonId) {
-                R.id.foodRadioButtonDB -> productType = 0
-                R.id.drinkRadioButtonDB -> productType = 1
-                R.id.cleaningRadioButtonDB -> productType = 2
+        //modify mode
+        if (arguments?.getInt("fragment_mode") == 1) {
+            val name = arguments?.getString("name")
+            val description = arguments?.getString("description")
+            val price = arguments?.getDouble("price")
+            val rating = arguments?.getFloat("rating")
+            val productType = arguments?.getInt("productType")
+
+            binding.editNameDB.setText(name)
+            binding.editTextTextMultiLineDB.setText(description)
+            binding.editPriceDB.setText(price.toString())
+            binding.ratingBar3DB.rating = rating!!
+            when (productType) {
+                0 -> binding.foodRadioButtonDB.isChecked = true
+                1 -> binding.drinkRadioButtonDB.isChecked = true
+                2 -> binding.cleaningRadioButtonDB.isChecked = true
             }
-            val product = DBProduct(
-                binding.editNameDB.text.toString(),
-                binding.editTextTextMultiLineDB.text.toString(),
-                productType,
-                binding.editPriceDB.text.toString().toDouble(),
-                binding.ratingBar3DB.rating,
-            )
-            productRepo.addItem(product)
+        }
+
+        binding.saveButtonDB.setOnClickListener { _ ->
+            if (arguments?.getInt("fragment_mode") == 0)
+                addNewProduct() //add mode
+            else
+                modifyProduct() //modify mode
+
             parentFragmentManager.setFragmentResult("item_added", Bundle.EMPTY)
             findNavController().navigateUp()
-            //requireActivity().onBackPressed()
-
-
         }
+
         binding.cancelButtonDB.setOnClickListener { _ ->
             findNavController().navigateUp()
+        }
+    }
+
+    private fun addNewProduct() {
+        var productType = 0
+        when (binding.radioGroupDB.checkedRadioButtonId) {
+            R.id.foodRadioButtonDB -> productType = 0
+            R.id.drinkRadioButtonDB -> productType = 1
+            R.id.cleaningRadioButtonDB -> productType = 2
+        }
+        val product = DBProduct(
+            binding.editNameDB.text.toString(),
+            binding.editTextTextMultiLineDB.text.toString(),
+            productType,
+            binding.editPriceDB.text.toString().toDouble(),
+            binding.ratingBar3DB.rating,
+        )
+        productRepo.addItem(product)
+        Toast.makeText(requireContext(), "New product added!", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun modifyProduct() {
+        productRepo = ProductRepository.getInstance(requireContext())!!
+        val productId = arguments?.getInt("product_id")
+        if (productId != null) {
+            val product = productRepo.getItemById(productId)
+            product?.apply {
+                this.name = binding.editNameDB.text.toString()
+                this.description = binding.editTextTextMultiLineDB.text.toString()
+                this.rating = binding.ratingBar3DB.rating
+                this.price = binding.editPriceDB.text.toString().toDouble()
+                when (binding.radioGroupDB.checkedRadioButtonId) {
+                    R.id.foodRadioButtonDB -> this.productType = 0
+                    R.id.drinkRadioButtonDB -> this.productType = 1
+                    R.id.cleaningRadioButtonDB -> this.productType = 2
+                    else -> this.productType = 0
+                }
+                productRepo.updateItem(this)
+                Toast.makeText(requireContext(), "Product updated!", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }

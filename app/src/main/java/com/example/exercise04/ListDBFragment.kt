@@ -55,7 +55,9 @@ class ListDBFragment : Fragment() {
 
         val fab = view.findViewById<View>(R.id.addProductActionButtonDB)
         fab.setOnClickListener(View.OnClickListener {
-            findNavController().navigate(R.id.action_to_nav_product_add_d_b)
+            val bundle = Bundle()
+            bundle.putInt("fragment_mode", 0) // 0 for add, 1 for edit
+            findNavController().navigate(R.id.action_to_nav_product_add_d_b, bundle)
             /*val fragment = ProductAddDBFragment()
             val transaction = parentFragmentManager.beginTransaction()
             transaction.replace(R.id.fragment_container, fragment)
@@ -66,6 +68,8 @@ class ListDBFragment : Fragment() {
         adapter.setOnClickListener(object : DBAdapter.OnClickListener {
             override fun onClick(position: Int, product: DBProduct) {
                 val bundle = Bundle()
+                bundle.putInt("fragment_mode", 1) // 0 for add, 1 for edit
+                bundle.putInt("product_id", product.id)
                 bundle.putString("name", product.name)
                 bundle.putString("description", product.description)
                 bundle.putDouble("price", product.price)

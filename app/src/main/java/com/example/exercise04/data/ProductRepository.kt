@@ -39,6 +39,15 @@ class ProductRepository (context: Context) {
         return true
     }
 
+    fun getItemById(itemId: Int): DBProduct? {
+        return productDao?.getItemById(itemId)
+    }
+
+    fun updateItem(item: DBProduct) : Boolean {
+        productDao?.update(item)
+        return true
+    }
+
     init {
         db = ProductDatabase.getDatabase(context)!!
         productDao = db?.productDao()!!

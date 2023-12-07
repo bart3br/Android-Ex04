@@ -5,6 +5,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Update
 
 @Dao
 interface ProductDao {
@@ -19,4 +20,10 @@ interface ProductDao {
 
     @Delete
     fun delete(product: DBProduct)
+
+    @Update
+    fun update(product: DBProduct)
+
+    @Query("SELECT * FROM product_table WHERE id = :itemId")
+    fun getItemById(itemId: Int): DBProduct?
 }

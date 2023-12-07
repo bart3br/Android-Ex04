@@ -32,9 +32,23 @@ class ProductDetailsFragment : Fragment() {
         binding.buttonReturnDB.setOnClickListener { _ ->
             findNavController().navigateUp()
         }
+
+        val fab = view.findViewById<View>(R.id.buttonModifyDB)
+        fab.setOnClickListener(View.OnClickListener {
+            val bundle = Bundle()
+            bundle.putInt("fragment_mode", 1) // 0 for add, 1 for edit
+            bundle.putInt("product_id", arguments?.getInt("product_id")!!)
+            bundle.putString("name", arguments?.getString("name"))
+            bundle.putString("description", arguments?.getString("description"))
+            bundle.putDouble("price", arguments?.getDouble("price")!!)
+            bundle.putFloat("rating", arguments?.getFloat("rating")!!)
+            bundle.putInt("productType", arguments?.getInt("productType")!!)
+
+            findNavController().navigate(R.id.action_to_nav_product_add_d_b, bundle)
+        })
     }
 
-    fun loadProductData() {
+    private fun loadProductData() {
         val name = arguments?.getString("name")
         val description = arguments?.getString("description")
         val price = arguments?.getDouble("price")
