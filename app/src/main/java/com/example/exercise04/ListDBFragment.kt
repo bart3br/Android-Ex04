@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.exercise04.data.DBProduct
 import com.example.exercise04.data.ProductRepository
 import com.example.exercise04.databinding.FragmentListDBBinding
 
@@ -61,7 +62,21 @@ class ListDBFragment : Fragment() {
             transaction.addToBackStack(null)
             transaction.commit()*/
         })
+
+        adapter.setOnClickListener(object : DBAdapter.OnClickListener {
+            override fun onClick(position: Int, product: DBProduct) {
+                val bundle = Bundle()
+                bundle.putString("name", product.name)
+                bundle.putString("description", product.description)
+                bundle.putDouble("price", product.price)
+                bundle.putFloat("rating", product.rating)
+                bundle.putInt("productType", product.productType)
+
+                findNavController().navigate(R.id.action_to_nav_product_details, bundle)
+            }
+        })
     }
+
 
     companion object {
         @JvmStatic
