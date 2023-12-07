@@ -25,14 +25,14 @@ class DBAdapter (var data: MutableList<DBProduct>, var productRepo: ProductRepos
 
         val ItemsViewModel = data[position]
 
-        when (ItemsViewModel.prodType) {
-            ProdType.FOOD -> {
+        when (ItemsViewModel.productType) {
+            0 -> {
                 holder.imageView.setImageResource(R.drawable.food_icon)
             }
-            ProdType.DRINK -> {
+            1 -> {
                 holder.imageView.setImageResource(R.drawable.water_icon)
             }
-            ProdType.CLEANING -> {
+            2 -> {
                 holder.imageView.setImageResource(R.drawable.cleaning_icon)
             }
         }

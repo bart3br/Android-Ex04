@@ -5,39 +5,58 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.Navigation.findNavController
+import androidx.navigation.fragment.findNavController
+import com.example.exercise04.data.DBProduct
+import com.example.exercise04.data.ProductRepository
+import com.example.exercise04.databinding.FragmentProductAddDBBinding
 
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class ProductAddDBFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding: FragmentProductAddDBBinding
+    private lateinit var productRepo: ProductRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_product_add_d_b, container, false)
+        binding = FragmentProductAddDBBinding.inflate(inflater, container, false)
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_product_add_d_b, container, false)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ProductAddDBFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        productRepo = ProductRepository.getInstance(requireContext())!!
+
+        binding.saveButtonDB.setOnClickListener { _ ->
+            var productType = 0
+            when (binding.radioGroupDB.checkedRadioButtonId) {
+                R.id.foodRadioButtonDB -> productType = 0
+                R.id.drinkRadioButtonDB -> productType = 1
+                R.id.cleaningRadioButtonDB -> productType = 2
             }
+            val product = DBProduct(
+                binding.editNameDB.text.toString(),
+                binding.editTextTextMultiLineDB.text.toString(),
+                productType,
+                binding.editPriceDB.text.toString().toDouble(),
+                binding.ratingBar3DB.rating,
+            )
+            productRepo.addItem(product)
+            parentFragmentManager.setFragmentResult("item_added", Bundle.EMPTY)
+            findNavController().navigateUp()
+            //requireActivity().onBackPressed()
+
+
+        }
+        binding.cancelButtonDB.setOnClickListener { _ ->
+            findNavController().navigateUp()
+        }
     }
 }

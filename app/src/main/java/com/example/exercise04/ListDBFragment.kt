@@ -40,14 +40,15 @@ class ListDBFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentListDBBinding.inflate(inflater, container, false)
-        return inflater.inflate(R.layout.fragment_list_d_b, container, false)
+        return binding.root
+        //return inflater.inflate(R.layout.fragment_list_d_b, container, false)
         // Inflate the layout for this fragment
         //return inflater.inflate(R.layout.fragment_list_d_b, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerview = view.findViewById<RecyclerView>(R.id.recyclerviewdb)
+        val recyclerview = view.findViewById<RecyclerView>(R.id.recyclerviewDB)
         recyclerview.layoutManager = LinearLayoutManager(requireContext())
         recyclerview.adapter = adapter
 

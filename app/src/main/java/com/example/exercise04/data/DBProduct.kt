@@ -12,7 +12,7 @@ class DBProduct {
     var description: String? = null
 
     @ColumnInfo(name = "prod_type")
-    var prodType: Int = 0
+    var productType: Int = 0
 
     @ColumnInfo(name = "price")
     var price: Double = 0.0
@@ -24,7 +24,7 @@ class DBProduct {
     constructor(name: String, description: String, prodType: Int, price: Double, rating: Float) {
         this.name = name
         this.description = description
-        this.prodType = prodType
+        this.productType = prodType
         this.price = price
         this.rating = rating
     }

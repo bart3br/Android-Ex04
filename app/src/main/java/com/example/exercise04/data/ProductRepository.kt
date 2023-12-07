@@ -42,10 +42,10 @@ class ProductRepository (context: Context) {
     init {
         db = ProductDatabase.getDatabase(context)!!
         productDao = db?.productDao()!!
-        //productList = productDao?.getAll()
-        addItem(DBProduct("Bread", "Bread is a staple food prepared from a dough of flour and water, usually by baking.", 0, 1.0, 4.5f))
-        addItem(DBProduct("Milk", "Milk is a nutrient-rich liquid food produced by the mammary glands of mammals.", 1, 2.0, 4.0f))
-        addItem(DBProduct("Soap", "Soap is a salt of a fatty acid used in a variety of cleansing and lubricating products.", 2, 3.0, 3.5f))
+        productList = productDao?.getAll()
+        //addItem(DBProduct("Bread", "Bread is a staple food prepared from a dough of flour and water, usually by baking.", 0, 1.0, 4.5f))
+        //addItem(DBProduct("Milk", "Milk is a nutrient-rich liquid food produced by the mammary glands of mammals.", 1, 2.0, 4.0f))
+        //addItem(DBProduct("Soap", "Soap is a salt of a fatty acid used in a variety of cleansing and lubricating products.", 2, 3.0, 3.5f))
     }
 
 
