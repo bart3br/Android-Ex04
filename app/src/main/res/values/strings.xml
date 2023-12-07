@@ -40,4 +40,5 @@
     <string name="price">PRICE</string>
     <string name="menu_recycler_view_db">Recycler View DB</string>
     <string name="menu_add_product_db">Add product DB</string>
+    <string name="menu_product_details">Product Details</string>
 </resources>

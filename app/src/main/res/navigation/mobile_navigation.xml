@@ -30,9 +30,18 @@
         android:name="com.example.exercise04.ProductAddDBFragment"
         android:label="@string/menu_add_product_db"
         tools:layout="@layout/fragment_product_add_d_b" />
+    <fragment
+        android:id="@+id/nav_product_details"
+        android:name="com.example.exercise04.ProductDetailsFragment"
+        android:label="@string/menu_product_details"
+        tools:layout="@layout/fragment_product_details" />
 
     <action
         android:id="@+id/action_to_nav_product_add_d_b"
         app:destination="@id/nav_product_add_d_b" />
+
+    <action
+        android:id="@+id/action_to_nav_product_details"
+        app:destination="@id/nav_product_details" />
 
 </navigation>

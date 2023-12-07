@@ -5,10 +5,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.exercise04.data.DBProduct
 import com.example.exercise04.databinding.FragmentProductDetailsBinding
 
 class ProductDetailsFragment : Fragment() {
     private lateinit var binding: FragmentProductDetailsBinding
+    private lateinit var product: DBProduct
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -23,13 +25,31 @@ class ProductDetailsFragment : Fragment() {
         return binding.root
     }
 
-    /*override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val product = arguments?.getSerializable("product") as ProductModel
-        binding.productNameTextView.text = product.name
-        binding.productDescriptionTextView.text = product.description
-        binding.productPriceTextView.text = product.price.toString()
-        binding.productRatingBar.rating = product.rating
-        binding.productImageView.setImageResource(product.image)
-    }*/
+        product = arguments?.getSerializable("product_key") as DBProduct
+
+        //display product info
+        binding.productNameTextViewDB.text = product.name
+        binding.descriptionTextViewDB.text = product.description
+        binding.priceTextViewDB.text = product.price.toString()
+        binding.ratingBar2DB.rating = product.rating
+        when (product.productType) {
+            0 -> binding.productImageViewDB.setImageResource(R.drawable.food_icon)
+            1 -> binding.productImageViewDB.setImageResource(R.drawable.water_icon)
+            2 -> binding.productImageViewDB.setImageResource(R.drawable.cleaning_icon)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(product: DBProduct): ProductDetailsFragment {
+            val fragment = ProductDetailsFragment()
+            val args = Bundle().apply {
+                putSerializable("product_key", product)
+            }
+            fragment.arguments = args
+            return fragment
+        }
+    }
 }
