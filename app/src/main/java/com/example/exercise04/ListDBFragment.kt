@@ -13,8 +13,6 @@ import com.example.exercise04.data.DBProduct
 import com.example.exercise04.data.ProductRepository
 import com.example.exercise04.databinding.FragmentListDBBinding
 
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
 class ListDBFragment : Fragment() {
     private lateinit var binding: FragmentListDBBinding
@@ -28,9 +26,6 @@ class ListDBFragment : Fragment() {
         adapter = DBAdapter(productRepo.getData()!!, productRepo)
 
         parentFragmentManager.setFragmentResultListener("item_added", this) { requestKey, _ ->
-            //val result = bundle.getSerializable("bundleKey") as ProductModel
-            //productRepo.insertData(result)
-            //adapter.addProduct(result)
             adapter.data = productRepo.getData()!!
             adapter.notifyDataSetChanged()
         }
@@ -39,12 +34,9 @@ class ListDBFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentListDBBinding.inflate(inflater, container, false)
         return binding.root
-        //return inflater.inflate(R.layout.fragment_list_d_b, container, false)
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_list_d_b, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,11 +50,6 @@ class ListDBFragment : Fragment() {
             val bundle = Bundle()
             bundle.putInt("fragment_mode", 0) // 0 for add, 1 for edit
             findNavController().navigate(R.id.action_to_nav_product_add_d_b, bundle)
-            /*val fragment = ProductAddDBFragment()
-            val transaction = parentFragmentManager.beginTransaction()
-            transaction.replace(R.id.fragment_container, fragment)
-            transaction.addToBackStack(null)
-            transaction.commit()*/
         })
 
         adapter.setOnClickListener(object : DBAdapter.OnClickListener {
@@ -70,26 +57,9 @@ class ListDBFragment : Fragment() {
                 val bundle = Bundle()
                 bundle.putInt("fragment_mode", 1) // 0 for add, 1 for edit
                 bundle.putInt("product_id", product.id)
-                bundle.putString("name", product.name)
-                bundle.putString("description", product.description)
-                bundle.putDouble("price", product.price)
-                bundle.putFloat("rating", product.rating)
-                bundle.putInt("productType", product.productType)
 
                 findNavController().navigate(R.id.action_to_nav_product_details, bundle)
             }
         })
-    }
-
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListDBFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
     }
 }

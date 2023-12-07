@@ -6,8 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.example.exercise04.data.DBProduct
 import com.example.exercise04.data.ProductRepository
@@ -25,10 +23,9 @@ class ProductAddDBFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentProductAddDBBinding.inflate(inflater, container, false)
         return binding.root
-        //return inflater.inflate(R.layout.fragment_product_add_d_b, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,20 +34,18 @@ class ProductAddDBFragment : Fragment() {
 
         //modify mode
         if (arguments?.getInt("fragment_mode") == 1) {
-            val name = arguments?.getString("name")
-            val description = arguments?.getString("description")
-            val price = arguments?.getDouble("price")
-            val rating = arguments?.getFloat("rating")
-            val productType = arguments?.getInt("productType")
-
-            binding.editNameDB.setText(name)
-            binding.editTextTextMultiLineDB.setText(description)
-            binding.editPriceDB.setText(price.toString())
-            binding.ratingBar3DB.rating = rating!!
-            when (productType) {
-                0 -> binding.foodRadioButtonDB.isChecked = true
-                1 -> binding.drinkRadioButtonDB.isChecked = true
-                2 -> binding.cleaningRadioButtonDB.isChecked = true
+            val productId = arguments?.getInt("product_id")
+            if (productId != null) {
+                val product = productRepo.getItemById(productId)
+                binding.editNameDB.setText(product?.name)
+                binding.editTextTextMultiLineDB.setText(product?.description)
+                binding.editPriceDB.setText(product?.price.toString())
+                binding.ratingBar3DB.rating = product?.rating!!
+                when (product.productType) {
+                    0 -> binding.foodRadioButtonDB.isChecked = true
+                    1 -> binding.drinkRadioButtonDB.isChecked = true
+                    2 -> binding.cleaningRadioButtonDB.isChecked = true
+                }
             }
         }
 
@@ -88,7 +83,6 @@ class ProductAddDBFragment : Fragment() {
     }
 
     private fun modifyProduct() {
-        productRepo = ProductRepository.getInstance(requireContext())!!
         val productId = arguments?.getInt("product_id")
         if (productId != null) {
             val product = productRepo.getItemById(productId)
