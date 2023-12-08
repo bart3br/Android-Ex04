@@ -15,11 +15,11 @@
         android:name="com.example.exercise04.SwipeViewsFragment"
         android:label="@string/menu_swipe_views"
         tools:layout="@layout/fragment_swipe_views" />
-    <fragment
+    <!--<fragment
         android:id="@+id/nav_recycler_view"
         android:name="com.example.exercise04.ListFragment"
         android:label="@string/menu_recycler_view"
-        tools:layout="@layout/fragment_recycler_view_list" />
+        tools:layout="@layout/fragment_recycler_view_list" />-->
     <fragment
         android:id="@+id/nav_recycler_view_d_b"
         android:name="com.example.exercise04.ListDBFragment"

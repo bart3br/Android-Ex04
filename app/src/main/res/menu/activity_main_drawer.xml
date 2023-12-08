@@ -13,10 +13,10 @@
             android:icon="@drawable/two_icon"
             android:title="@string/menu_swipe_views" />
 
-        <item
+        <!--<item
             android:id="@+id/nav_recycler_view"
             android:icon="@drawable/three_icon"
-            android:title="@string/menu_recycler_view" />
+            android:title="@string/menu_recycler_view" />-->
 
         <item
             android:id="@+id/nav_recycler_view_d_b"

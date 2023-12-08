@@ -23,7 +23,7 @@
     <string name="returnButton">Return</string>
     <string name="action_add_product">Add product</string>
     <string name="nameHint">Name</string>
-    <string name="add">Add</string>
+    <string name="add">Save</string>
     <string name="cancel">Cancel</string>
     <string name="floating_action_button">Add product</string>
     <string name="deleteButton">Delete</string>
@@ -40,7 +40,7 @@
     <string name="price">Price:</string>
     <string name="menu_recycler_view_db">Recycler View DB</string>
     <string name="menu_add_product_db">Add product DB</string>
-    <string name="menu_product_details">Product Details</string>
+    <string name="menu_product_details">Product Details DB</string>
     <string name="description_tv">Description:</string>
     <string name="modifyButton">Modify</string>
 </resources>
