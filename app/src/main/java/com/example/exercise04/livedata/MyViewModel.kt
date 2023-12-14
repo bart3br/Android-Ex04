@@ -10,8 +10,8 @@ import com.example.exercise04.data.DBProduct
 import kotlinx.coroutines.launch
 
 class MyViewModel (private val repository: Product2Repository) : ViewModel() {
-    private val _products = MutableLiveData<MutableList<DBProduct>>()
-    val products: LiveData<MutableList<DBProduct>> get() = _products
+    private val _products = MutableLiveData<List<DBProduct>>()
+    val products: LiveData<List<DBProduct>> get() = _products
 
     init {
         viewModelScope.launch {

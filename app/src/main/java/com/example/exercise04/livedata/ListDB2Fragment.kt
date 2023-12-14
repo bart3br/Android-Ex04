@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.core.os.bundleOf
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +34,7 @@ class ListDB2Fragment : Fragment() {
         recView.layoutManager = LinearLayoutManager(requireContext())
         val repository = Product2Repository.getInstance(requireContext())
         myViewModel = MyViewModel(repository!!)
-        adapter = MyDB2Adapter(myViewModel.products.value!!)
+        adapter = MyDB2Adapter(myViewModel.products, myViewModel)
         recView.adapter = adapter
 
         myViewModel.products.observe(viewLifecycleOwner, Observer { items ->
@@ -45,12 +47,12 @@ class ListDB2Fragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentFragmentManager.setFragmentResultListener("itemAdd", viewLifecycleOwner) { _, bundle ->
-            val productName = bundle.getString("product_name", "default product")
-            val productDescription = bundle.getString("product_description", "some description")
-            val productType = bundle.getInt("product_type", 0)
-            val productPrice = bundle.getDouble("product_price", 1.0)
-            val productRating = bundle.getFloat("product_rating", 3.0f)
+        parentFragmentManager.setFragmentResultListener("item_add", viewLifecycleOwner) { _, bundle ->
+            val productName = bundle.getString("name", "default product")
+            val productDescription = bundle.getString("description", "some description")
+            val productType = bundle.getInt("type", 0)
+            val productPrice = bundle.getDouble("price", 10.0)
+            val productRating = bundle.getFloat("rating", 3.0f)
             val newProduct = DBProduct(
                 productName,
                 productDescription,
@@ -59,19 +61,18 @@ class ListDB2Fragment : Fragment() {
                 productRating
             )
             myViewModel.addProduct(newProduct)
-
         }
 
-        parentFragmentManager.setFragmentResultListener("itemModify", viewLifecycleOwner) { _, bundle ->
-            val productId = bundle.getInt("product_id", 0)
-            val productName = bundle.getString("product_name", "default product")
-            val productDescription = bundle.getString("product_description", "some description")
-            val productType = bundle.getInt("product_type", 0)
-            val productPrice = bundle.getDouble("product_price", 1.0)
-            val productRating = bundle.getFloat("product_rating", 3.0f)
-
-            myViewModel.updateProduct(productId, productName, productDescription, productType, productPrice, productRating)
-
+        parentFragmentManager.setFragmentResultListener("item_modify", viewLifecycleOwner) { _, bundle ->
+            run {
+                val productId = bundle.getInt("id", 0)
+                val productName = bundle.getString("name", "default product")
+                val productDescription = bundle.getString("description", "some description")
+                val productType = bundle.getInt("type", 0)
+                val productPrice = bundle.getDouble("price", 10.0)
+                val productRating = bundle.getFloat("rating", 3.0f)
+                myViewModel.updateProduct(productId, productName, productDescription, productType, productPrice, productRating)
+            }
         }
 
         binding.addProductActionButtonDB.setOnClickListener {
@@ -79,35 +80,15 @@ class ListDB2Fragment : Fragment() {
             bundle.putInt("fragment_mode", 0) // 0 for add, 1 for edit
             findNavController().navigate(R.id.action_to_nav_product_add_d_b, bundle)
         }
-        /*val recyclerview = view.findViewById<RecyclerView>(R.id.recyclerviewDB)
-        recyclerview.layoutManager = LinearLayoutManager(requireContext())
-        recyclerview.adapter = adapter
-
-        val fab = view.findViewById<View>(R.id.addProductActionButtonDB)
-        fab.setOnClickListener(View.OnClickListener {
-            val bundle = Bundle()
-            bundle.putInt("fragment_mode", 0) // 0 for add, 1 for edit
-            findNavController().navigate(R.id.action_to_nav_product_add_d_b, bundle)
-        })
-
-        adapter.setOnClickListener(object : DBAdapter.OnClickListener {
-            override fun onClick(position: Int, product: DBProduct) {
-                val bundle = Bundle()
-                bundle.putInt("fragment_mode", 1) // 0 for add, 1 for edit
-                bundle.putInt("product_id", product.id)
-
-                findNavController().navigate(R.id.action_to_nav_product_details, bundle)
-            }
-        })*/
     }
 
-    inner class MyDB2Adapter(var data: MutableList<DBProduct>) : RecyclerView.Adapter<MyDB2Adapter.ViewHolder>() {
+    inner class MyDB2Adapter(var data: LiveData<List<DBProduct>>, private val myViewModel: MyViewModel)
+        : RecyclerView.Adapter<MyDB2Adapter.ViewHolder>() {
         private val MAX_TEXT_LENGTH = 20
-        //private var onClickListener: OnClickListener? = null
-        private var selectedProductIndx: Int = RecyclerView.NO_POSITION
+        private var listener: AdapterView.OnItemClickListener? = null
 
         override fun getItemCount(): Int {
-            return data.size
+            return data.value?.size ?: 0
         }
 
         inner class ViewHolder(viewHolder: CardViewDesignBinding) :
@@ -129,8 +110,9 @@ class ListDB2Fragment : Fragment() {
 
         @SuppressLint("SetTextI18n")
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
-            val product = data[position]
+            val position = holder.getAdapterPosition()
+            val product = data.value?.get(position)!! ?: return
+            //val product = data[position]
             //val ItemsViewModel = getProduct(holder.getAdapterPosition())
             //val ItemsViewModel = DBAdapter.getProduct(position)
 
@@ -154,62 +136,36 @@ class ListDB2Fragment : Fragment() {
                 holder.textView2.text = product.description!!.removeRange(MAX_TEXT_LENGTH, product.description!!.length) + "..."
 
 
-            //display item details
+            //display item details on click
             holder.itemView.setOnClickListener {
                 /*if(onClickListener != null){
                     onClickListener!!.onClick(position, ItemsViewModel)
                 }*/
-                parentFragmentManager.setFragmentResult("msgtochild", bundleOf(
+                /*parentFragmentManager.setFragmentResult("msgtochild", bundleOf(
                     "name" to product.name,
                     "description" to product.description,
                     "productType" to product.productType,
                     "price" to product.price,
                     "rating" to product.rating,
                     "id" to product.id
-                ))
-                findNavController().navigate(R.id.action_to_nav_product_details2)
+                ))*/
+                val bundle = Bundle()
+                bundle.putInt("fragment_mode", 1) // 0 for add, 1 for edit
+                bundle.putInt("id", product.id)
+                bundle.putString("name", product.name)
+                bundle.putString("description", product.description)
+                bundle.putInt("type", product.productType)
+                bundle.putDouble("price", product.price)
+                bundle.putFloat("rating", product.rating)
+
+                findNavController().navigate(R.id.action_to_nav_product_details2, bundle)
             }
 
+            //delete item on long click
             holder.itemView.setOnLongClickListener {
                 myViewModel.deleteProduct(product)
                 true
             }
-            /*holder.itemView.setOnLongClickListener { parentFragmentManager.setFragmentResult("msgtochild"), bundleOf(
-                "name" to ItemsViewModel.name,
-                "description" to ItemsViewModel.description,
-                "productType" to ItemsViewModel.productType,
-                "id" to ItemsViewModel.id
-            ) }*/
         }
-
-        /*interface OnClickListener {
-            fun onClick(position: Int, product: DBProduct)
-        }
-
-        fun setOnClickListener(onClickListener: OnClickListener) {
-            this.onClickListener = onClickListener
-        }*/
-
-        /*object DiffCallback : DiffUtil.ItemCallback<DBProduct>() {
-            override fun areItemsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
-                return oldItem == newItem
-            }
-        }*/
     }
-
-    /*companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<DBProduct>() {
-            override fun areItemsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
-                return oldItem == newItem
-            }
-        }
-    }*/
 }

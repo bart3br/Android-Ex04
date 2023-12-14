@@ -31,7 +31,7 @@ class Product2Repository (context: Context) {
         productDao.upsertProduct(product)
     }
 
-    suspend fun getAllProducts(): MutableList<DBProduct>? = withContext(Dispatchers.IO) {
+    suspend fun getAllProducts(): List<DBProduct>? = withContext(Dispatchers.IO) {
         productDao.getAll()
     }
 
