@@ -28,4 +28,32 @@ class DBProduct {
         this.price = price
         this.rating = rating
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as DBProduct
+
+        if (id != other.id) return false
+        if (name != other.name) return false
+        if (description != other.description) return false
+        if (productType != other.productType) return false
+        if (price != other.price) return false
+        if (rating != other.rating) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = id
+        result = 31 * result + (name?.hashCode() ?: 0)
+        result = 31 * result + (description?.hashCode() ?: 0)
+        result = 31 * result + productType
+        result = 31 * result + price.hashCode()
+        result = 31 * result + rating.hashCode()
+        return result
+    }
+
+
 }

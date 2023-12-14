@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercise04.data.DBProduct
 import com.example.exercise04.data.ProductRepository
@@ -63,6 +64,10 @@ class DBAdapter (var data: MutableList<DBProduct>, var productRepo: ProductRepos
         return data.size
     }
 
+    open fun getProduct(position: Int): DBProduct {
+        return data[position]
+    }
+
     fun addProduct(product: DBProduct){
         data.add(product)
         notifyDataSetChanged()
@@ -86,4 +91,18 @@ class DBAdapter (var data: MutableList<DBProduct>, var productRepo: ProductRepos
         val textView: TextView = itemView.findViewById(R.id.textView)
         val textView2: TextView = itemView.findViewById(R.id.textView2)
     }
+
+    companion object {
+        private const val TAG = "DBAdapter"
+        private val DiffCallback = object : DiffUtil.ItemCallback<DBProduct>() {
+            override fun areItemsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
+                return oldItem.id == newItem.id
+            }
+            override fun areContentsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+
 }
