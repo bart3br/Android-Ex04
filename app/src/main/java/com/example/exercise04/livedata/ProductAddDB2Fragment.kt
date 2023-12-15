@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.exercise04.R
@@ -61,15 +62,23 @@ class ProductAddDB2Fragment : Fragment() {
     }
 
     private fun addNewProduct() {
-        val name = binding.editNameDB.text.toString()
-        val description = binding.editTextTextMultiLineDB.text.toString()
+        val name = binding.editNameDB.text.toString().trim()
+        val description = binding.editTextTextMultiLineDB.text.toString().trim()
+        val priceText = binding.editPriceDB.text.toString().trim()
+
+        //null fields check
+        if (name.isEmpty() || description.isEmpty() || priceText.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         val type = when (binding.radioGroupDB.checkedRadioButtonId) {
             R.id.foodRadioButtonDB -> 0
             R.id.drinkRadioButtonDB -> 1
             R.id.cleaningRadioButtonDB -> 2
             else -> 0
         }
-        val price = binding.editPriceDB.text.toString().toDouble()
+        val price = priceText.toDouble()
         val rating = binding.ratingBar3DB.rating
 
         val bundle = Bundle()
@@ -98,13 +107,21 @@ class ProductAddDB2Fragment : Fragment() {
         if (productId != null) {
             val name = binding.editNameDB.text.toString()
             val description = binding.editTextTextMultiLineDB.text.toString()
+            val priceText = binding.editPriceDB.text.toString().trim()
+
+            //null fields check
+            if (name.isEmpty() || description.isEmpty() || priceText.isEmpty()) {
+                Toast.makeText(requireContext(), "Please fill all fields!", Toast.LENGTH_SHORT).show()
+                return
+            }
+
             val type = when (binding.radioGroupDB.checkedRadioButtonId) {
                 R.id.foodRadioButtonDB -> 0
                 R.id.drinkRadioButtonDB -> 1
                 R.id.cleaningRadioButtonDB -> 2
                 else -> 0
             }
-            val price = binding.editPriceDB.text.toString().toDouble()
+            val price = priceText.toDouble()
             val rating = binding.ratingBar3DB.rating
 
             val bundle = Bundle()
