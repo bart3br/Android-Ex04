@@ -34,6 +34,7 @@ class ProductDetails2Fragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val bundle = arguments
+        val id = bundle!!.getInt("id", 0)
         var name = bundle!!.getString("name", "default name")
         var description = bundle.getString("description", "default description")
         var type = bundle.getInt("type", 0)
@@ -54,16 +55,17 @@ class ProductDetails2Fragment : Fragment() {
                 "rating" to binding.ratingBar2DB.rating.toString(),
             )
             )*/
-            val bundle = Bundle()
-            bundle.putInt("fragment_mode", 1) // 0 for add, 1 for edit
-            bundle.putInt("product_id", arguments?.getInt("product_id")!!)
-            bundle.putString("name", name)
-            bundle.putString("description", description)
-            bundle.putDouble("price", price)
-            bundle.putFloat("rating", rating)
-            bundle.putInt("type", type)
+            val bundle2 = Bundle()
+            bundle2.putInt("fragment_mode", 1) // 0 for add, 1 for edit
+            bundle2.putInt("id", id)
+            bundle2.putString("name", name)
+            bundle2.putString("description", description)
+            bundle2.putDouble("price", price)
+            bundle2.putFloat("rating", rating)
+            bundle2.putInt("type", type)
 
-            findNavController().navigate(R.id.action_to_nav_product_add_d_b2, bundle)
+            //parentFragmentManager.setFragmentResult("item_modify", bundle)
+            findNavController().navigate(R.id.action_to_nav_product_add_d_b2, bundle2)
         }
     }
 

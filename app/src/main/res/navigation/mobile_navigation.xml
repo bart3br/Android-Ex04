@@ -65,5 +65,9 @@
         android:id="@+id/action_to_nav_product_details2"
         app:destination="@id/nav_product_details2" />
 
+    <action
+        android:id="@+id/action_to_nav_recycler_view_d_b2"
+        app:destination="@id/nav_recycler_view_d_b2" />
+
 
 </navigation>
