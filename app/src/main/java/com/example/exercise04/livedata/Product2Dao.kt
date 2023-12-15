@@ -1,5 +1,6 @@
 package com.example.exercise04.livedata
 
+import androidx.lifecycle.MutableLiveData
 import com.example.exercise04.data.DBProduct
 
 import androidx.room.Dao
@@ -15,6 +16,9 @@ interface Product2Dao {
 
     @Upsert
     suspend fun upsertProduct(product: DBProduct)
+
+    /*@Query("SELECT * FROM product_table")
+    suspend fun getAll(): MutableLiveData<List<DBProduct>>?*/
 
     @Query("SELECT * FROM product_table")
     suspend fun getAll(): MutableList<DBProduct>?

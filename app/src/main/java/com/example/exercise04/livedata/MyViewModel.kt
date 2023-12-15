@@ -1,17 +1,21 @@
 package com.example.exercise04.livedata
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.exercise04.data.DBProduct
 import kotlinx.coroutines.launch
 
-class MyViewModel (private val repository: Product2Repository) : ViewModel() {
+//class MyViewModel (private val repository: Product2Repository) : ViewModel() {
+class MyViewModel (context: Context) : ViewModel() {
     private val _products = MutableLiveData<List<DBProduct>>()
-    val products: LiveData<List<DBProduct>> get() = _products
+    val products: MutableLiveData<List<DBProduct>> get() = _products
+    private val repository = Product2Repository.getInstance(context)!!
 
     init {
         viewModelScope.launch {
@@ -46,12 +50,13 @@ class MyViewModel (private val repository: Product2Repository) : ViewModel() {
     fun insertProduct(product: DBProduct?) = repository.addProduct(product)
     fun deleteProduct(product: DBProduct?) = repository.deleteProduct(product)*/
 
-    /*companion object {
+    companion object {
         val Factory: ViewModelProvider.Factory = object : ViewModelProvider.Factory {
-            override fun <T : ViewModel?> create(modelClass: Class<T>, extras: CreationExtras): T {
+            @Suppress("UNCHECKED_CAST")
+            override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
                 val application = checkNotNull(extras[APPLICATION_KEY])
                 return MyViewModel(application.applicationContext) as T
             }
         }
-    }*/
+    }
 }

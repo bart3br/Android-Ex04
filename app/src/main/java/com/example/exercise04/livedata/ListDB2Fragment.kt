@@ -7,20 +7,23 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.exercise04.R
 import com.example.exercise04.data.DBProduct
 import com.example.exercise04.databinding.CardViewDesignBinding
 import com.example.exercise04.databinding.FragmentListDB2Binding
-
+import androidx.recyclerview.widget.ListAdapter
 
 class ListDB2Fragment : Fragment() {
     private lateinit var binding: FragmentListDB2Binding
-    private lateinit var myViewModel: MyViewModel
+    private val myViewModel: MyViewModel by activityViewModels{MyViewModel.Factory}
+    //private lateinit var myViewModel: MyViewModel
     private lateinit var adapter: MyDB2Adapter
 
     override fun onCreateView(
@@ -32,12 +35,14 @@ class ListDB2Fragment : Fragment() {
         val recView = binding.recyclerviewDB
         recView.layoutManager = LinearLayoutManager(requireContext())
         val repository = Product2Repository.getInstance(requireContext())
-        myViewModel = MyViewModel(repository!!)
+        //myViewModel = MyViewModel(repository!!)
+        //myViewModel = MyViewModel(repository!!)
         adapter = MyDB2Adapter(myViewModel.products, myViewModel)
         recView.adapter = adapter
 
         myViewModel.products.observe(viewLifecycleOwner, Observer { items ->
             adapter.notifyDataSetChanged()
+            //adapter.submitList(items)
         })
 
         return binding.root
@@ -81,8 +86,19 @@ class ListDB2Fragment : Fragment() {
         }
     }
 
+    /*private val DiffCallback = object : DiffUtil.ItemCallback<DBProduct>() {
+        override fun areItemsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: DBProduct, newItem: DBProduct): Boolean {
+            return oldItem == newItem
+        }
+    }*/
+
     inner class MyDB2Adapter(var data: LiveData<List<DBProduct>>, private val myViewModel: MyViewModel)
         : RecyclerView.Adapter<MyDB2Adapter.ViewHolder>() {
+        //: ListAdapter<DBProduct, MyDB2Adapter.ViewHolder>(DBProduct.DiffCallback()) {
         private val MAX_TEXT_LENGTH = 20
 
         override fun getItemCount(): Int {

@@ -1,6 +1,7 @@
 package com.example.exercise04.livedata
 
 import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import com.example.exercise04.data.DBProduct
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +32,11 @@ class Product2Repository (context: Context) {
         productDao.upsertProduct(product)
     }
 
-    suspend fun getAllProducts(): List<DBProduct>? = withContext(Dispatchers.IO) {
+    /*suspend fun getAllProducts(): MutableLiveData<List<DBProduct>>? = withContext(Dispatchers.IO) {
+        productDao.getAll()
+    }*/
+
+    suspend fun getAllProducts(): MutableList<DBProduct>? = withContext(Dispatchers.IO) {
         productDao.getAll()
     }
 
