@@ -6,8 +6,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -78,14 +76,13 @@ class ListDB2Fragment : Fragment() {
         binding.addProductActionButtonDB.setOnClickListener {
             val bundle = Bundle()
             bundle.putInt("fragment_mode", 0) // 0 for add, 1 for edit
-            findNavController().navigate(R.id.action_to_nav_product_add_d_b, bundle)
+            findNavController().navigate(R.id.action_to_nav_product_add_d_b2, bundle)
         }
     }
 
     inner class MyDB2Adapter(var data: LiveData<List<DBProduct>>, private val myViewModel: MyViewModel)
         : RecyclerView.Adapter<MyDB2Adapter.ViewHolder>() {
         private val MAX_TEXT_LENGTH = 20
-        private var listener: AdapterView.OnItemClickListener? = null
 
         override fun getItemCount(): Int {
             return data.value?.size ?: 0
