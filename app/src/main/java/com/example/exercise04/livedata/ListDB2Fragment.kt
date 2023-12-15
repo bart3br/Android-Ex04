@@ -97,8 +97,6 @@ class ListDB2Fragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-//        val view = LayoutInflater.from(parent.context)
-//            .inflate(R.layout.card_view_design, parent, false)
             val view = CardViewDesignBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent, false)
@@ -110,9 +108,6 @@ class ListDB2Fragment : Fragment() {
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val position = holder.getAdapterPosition()
             val product = data.value?.get(position)!! ?: return
-            //val product = data[position]
-            //val ItemsViewModel = getProduct(holder.getAdapterPosition())
-            //val ItemsViewModel = DBAdapter.getProduct(position)
 
             when (product.productType) {
                 0 -> {
@@ -136,17 +131,6 @@ class ListDB2Fragment : Fragment() {
 
             //display item details on click
             holder.itemView.setOnClickListener {
-                /*if(onClickListener != null){
-                    onClickListener!!.onClick(position, ItemsViewModel)
-                }*/
-                /*parentFragmentManager.setFragmentResult("msgtochild", bundleOf(
-                    "name" to product.name,
-                    "description" to product.description,
-                    "productType" to product.productType,
-                    "price" to product.price,
-                    "rating" to product.rating,
-                    "id" to product.id
-                ))*/
                 val bundle = Bundle()
                 bundle.putInt("fragment_mode", 1) // 0 for add, 1 for edit
                 bundle.putInt("id", product.id)
@@ -155,7 +139,8 @@ class ListDB2Fragment : Fragment() {
                 bundle.putInt("type", product.productType)
                 bundle.putDouble("price", product.price)
                 bundle.putFloat("rating", product.rating)
-                Log.d("MyDB2Adapter", "onBindViewHolder: $bundle")
+
+                //Log.d("MyDB2Adapter", "onBindViewHolder: $bundle")
                 findNavController().navigate(R.id.action_to_nav_product_details2, bundle)
             }
 

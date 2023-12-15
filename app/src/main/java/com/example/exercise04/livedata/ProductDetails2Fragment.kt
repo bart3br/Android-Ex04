@@ -24,8 +24,6 @@ class ProductDetails2Fragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        // Inflate the layout for this fragment
-        //return inflater.inflate(R.layout.fragment_product_details2, container, false)
         binding = FragmentProductDetails2Binding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,13 +46,6 @@ class ProductDetails2Fragment : Fragment() {
         }
 
         binding.buttonModifyDB.setOnClickListener {
-            /*parentFragmentManager.setFragmentResult("msgtoedit", bundleOf(
-                "name" to binding.productNameTextViewDB.text.toString(),
-                "description" to binding.descriptionTextViewDB.text.toString(),
-                "price" to binding.priceTextViewDB.text.toString(),
-                "rating" to binding.ratingBar2DB.rating.toString(),
-            )
-            )*/
             val bundle2 = Bundle()
             bundle2.putInt("fragment_mode", 1) // 0 for add, 1 for edit
             bundle2.putInt("id", id)
@@ -70,11 +61,6 @@ class ProductDetails2Fragment : Fragment() {
     }
 
     private fun loadProductData(name :String, description :String, type :Int, price :Double, rating :Float) {
-        //val productId = arguments?.getInt("product_id")!!
-
-        //val productRepo = ProductRepository.getInstance(requireContext())!!
-        //val product = productRepo.getItemById(productId)
-
         binding.productNameTextViewDB.text = name
         binding.descriptionTextViewDB.text = description
         binding.priceTextViewDB.text = price.toString()

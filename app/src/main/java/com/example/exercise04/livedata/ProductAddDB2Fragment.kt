@@ -15,7 +15,6 @@ import com.example.exercise04.databinding.FragmentProductAddDB2Binding
 
 class ProductAddDB2Fragment : Fragment() {
     private lateinit var binding: FragmentProductAddDB2Binding
-    //private lateinit var productRepo: Product2Repository
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,7 +26,6 @@ class ProductAddDB2Fragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //productRepo = Product2Repository.getInstance(requireContext())!!
 
         //modify mode
         if (arguments?.getInt("fragment_mode") == 1) {
@@ -90,14 +88,6 @@ class ProductAddDB2Fragment : Fragment() {
 
         parentFragmentManager.setFragmentResult("item_add", bundle)
         findNavController().navigateUp()
-        /*val product = DBProduct(
-            binding.editNameDB.text.toString(),
-            binding.editTextTextMultiLineDB.text.toString(),
-            productType,
-            binding.editPriceDB.text.toString().toDouble(),
-            binding.ratingBar3DB.rating,
-        )*/
-        //productRepo.addItem(product)
 
         //Toast.makeText(requireContext(), "New product added!", Toast.LENGTH_SHORT).show()
     }
@@ -131,7 +121,8 @@ class ProductAddDB2Fragment : Fragment() {
             bundle.putInt("type", type)
             bundle.putDouble("price", price)
             bundle.putFloat("rating", rating)
-            Log.d("ProductAddDB2Fragment", "modifyProduct: $bundle")
+
+            //Log.d("ProductAddDB2Fragment", "modifyProduct: $bundle")
             parentFragmentManager.setFragmentResult("item_modify", bundle)
             //findNavController().navigateUp()
             findNavController().navigate(
